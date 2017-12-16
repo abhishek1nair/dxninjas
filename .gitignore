@@ -6,5 +6,5 @@ MANIFEST
 build/
 node_modules
 react/js
+venv/
 *~
-
