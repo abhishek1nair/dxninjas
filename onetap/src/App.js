@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Router, Route, hashHistory } from 'react-router';
+import AppointmentPage from './pages/appointmentcreatepage/AppointmentPage.jsx';
+import DoctorPage from './pages/doctorscreen/DoctorPage.jsx';
+import ReceptionPage from './pages/receptionpage/ReceptionPage.jsx';
+import UserProfilePage from './pages/userprofileform/UserProfilePage.jsx';
+import Error404 from './pages/ErrorPage.jsx';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Router history={hashHistory}>
+        <Route path="/appointment" component={AppointmentPage} />
+        <Route path="/user-create" component={UserProfilePage} />
+        <Route path="/reception" component={ReceptionPage} />
+        <Route path="/doctor" component={DoctorPage} />
+        <Route path="*" component={Error404} />
+      </Router>
     );
   }
 }
