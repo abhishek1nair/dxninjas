@@ -1,0 +1,79 @@
+{
+  "extends": [ "airbnb-base", "plugin:react/recommended" ],
+  "plugins": [ "react" ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmascript": 6,
+    "soureType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+    },
+  },
+  settings: {
+    import/extensions: ['.js', '.jsx'],
+  },
+  "rules" : {
+    "arrow-body-style": 0,
+    "consistent-return": 0,
+    "import/extensions": 0,
+    "arrow-parens": 0,
+    "class-methods-use-this": 0,
+    "import/no-dynamic-require": 0,
+    "no-restricted-syntax": [0, "ForInStatement"],
+    "import/no-extraneous-dependencies": 0,
+    "comma-dangle": [
+        1,
+        "never"
+    ],
+    "no-cond-assign": 1,
+    "no-debugger": 1,
+    "no-dupe-args": 1,
+    "no-dupe-keys": 1,
+    "no-duplicate-case": 1,
+    "no-empty": 1,
+    "no-empty-function": 1,
+    "no-func-assign": 1,
+    "no-sparse-arrays": 1,
+    "eqeqeq": 1,
+    "no-eval": 1,
+    "no-magic-numbers": [1, {
+        "ignoreArrayIndexes": true,
+        "ignore": [-1, 0, 1]
+    }],
+    "no-lone-blocks": 1,
+    "no-redeclare": 1,
+    "no-unused-expressions": 1,
+    "no-useless-concat": 1,
+    "no-unused-vars": 1,
+    "no-use-before-define": 1,
+    "no-lonely-if": 1,
+    "no-mixed-spaces-and-tabs": 1,
+    "new-cap": 1,
+    "indent": [
+        1,
+        2
+    ],
+    "vars-on-top": 1
+  },
+  "globals": {
+    "describe": true,
+    "it": true,
+    "before": true,
+    "after": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "browser": true,
+    "sinon": true,
+    "expect": true,
+    "google": true,
+    "window": true,
+    "document": true,
+    "history": true,
+    "location": true,
+    "navigator": true,
+    "$": true,
+    "ga": true,
+    "Tracker": true,
+    "newrelic": true
+  }
+}

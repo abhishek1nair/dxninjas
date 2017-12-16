@@ -1,0 +1,9 @@
+{
+  "presets": [["latest", {"modules": false}], "react"],
+  "plugins": [
+    "add-module-exports",
+    "transform-object-assign",
+    "transform-object-rest-spread",
+    "react-hot-loader/babel"
+  ]
+}
