@@ -6,13 +6,14 @@
     "ecmascript": 6,
     "soureType": "module",
     "ecmaFeatures": {
-      "jsx": true,
-    },
+      "jsx": true
+    }
   },
-  settings: {
-    import/extensions: ['.js', '.jsx'],
+  "settings": {
+    "import/extensions": [".js", ".jsx"]
   },
   "rules" : {
+    "prop-types": 0,
     "arrow-body-style": 0,
     "consistent-return": 0,
     "import/extensions": 0,
