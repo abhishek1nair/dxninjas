@@ -75,19 +75,15 @@ def update_appointment(appointment_id):
     params = None
 
     if 'checkin_time' in payload:
-        query += "checkin_time=%s"
+        query = "checkin_time=%s where checkin_time is not null"
         params = (payload.get('checkin_time'),)
     if 'consultation_start' in payload:
-        if query:
-            query += query + ", "
-        query += "consultation_start=%s"
-        params = (params + (payload.get('consultation_start'),)) if params else (payload.get('consultation_start'),)
+        query = "consultation_start=%s where consultation_start is not null"
+        params = (payload.get('consultation_start'),)
     if 'consultation_end' in payload:
-        if query:
-            query += query + ", "
-        query = "consultation_end=%s"
-        params = (params + (payload.get('consultation_end'),)) if params else (payload.get('consultation_end'),)
-    query = "UPDATE appointments SET " + query + " where id=%s"
+        query = "consultation_end=%s where consultation_end is not null"
+        params = (payload.get('consultation_end'),)
+    query = "UPDATE appointments SET " + query + " and id=%s"
     cur.execute(query, params + (appointment_id,))
     db.commit()
     return 'Done'
@@ -114,12 +110,15 @@ def create_appointment():
     elif request.method == 'GET':
         face_ids = request.args.getlist('face_ids')
         users = get_user_by_face(face_ids)
-        ids_string = ''.join(str(x.get('id')) for x in users)
-        query = "SELECT * from appointments where user_id in (%s) order by appointment_time"
-        cur.execute(query, (ids_string,))
+        now = datetime.datetime.now()
+        ids_string = ','.join(("'" + str(x.get('id')) + "'") for x in users)
+        query = "SELECT ap.appointment_time, ap.id, u.name, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where user_id in ({user_ids}) and DATE(ap.appointment_time) = %s order by appointment_time".format(
+            user_ids=ids_string)
+        cur.execute(query, (now.strftime("%Y-%m-%d"),))
         data = dictfetchall(cur)
-
         if data:
+            result = data[0]
+            result['appointment_time'] = result['appointment_time'].strftime("%Y-%d-%m %H:%M")
             return jsonify(data[0])
         else:
             return Response(status=404)
