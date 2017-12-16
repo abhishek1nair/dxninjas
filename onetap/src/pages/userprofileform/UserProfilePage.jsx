@@ -4,6 +4,7 @@ import Webcam from 'react-webcam';
 import { Form, Input, Select, Button, Row, Col } from 'antd';
 import '../../AppointmentPage.css';
 import { enroll } from '../../utils/imageHandler';
+import { createUser } from '../../utils/api';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -16,6 +17,7 @@ class RegistrationForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.checkConfirm = this.checkConfirm.bind(this);
     this.checkScreenshot = this.checkScreenshot.bind(this);
+    this.createUser = this.createUser.bind(this);
     this.state = {
       confirmDirty: false,
       autoCompleteResult: [],
@@ -25,13 +27,24 @@ class RegistrationForm extends Component {
 
   createUser(values) {
     enroll({
-      image: values.screenshot,
+      image: values.image,
       subjectId: values.phone
-    }).then((response) => {
+    })
+    .then((response) => {
       return response.data.face_id;
-    }).then(faceId => {
-
-    }).catch((err) => {
+    })
+    .then(faceId => {
+      return createUser({
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        faceId
+      });
+    })
+    .then(() => {
+      this.setState({ loading: false });
+    })
+    .catch((err) => {
       this.setState({ loading: false });
     });
   }
@@ -41,6 +54,7 @@ class RegistrationForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        this.setState({ loading: true }, this.createUser(values));
       }
     });
   }
