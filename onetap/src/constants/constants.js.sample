@@ -1,0 +1,6 @@
+const constants = {
+    KAIROS_APP_ID: 'sometinykey',
+    KAIROS_APP_KEY: 'someextralongkeyhere'
+};
+
+module.exports = constants;
