@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Tooltip, Icon, Select, Checkbox, Button } from 'antd';
+import { Form, Input, Tooltip, Icon, Select, Checkbox, Button, DatePicker, TimePicker } from 'antd';
+import moment from 'moment';
+import 'moment/locale/en-gb';
+
+moment.locale('en-gb');
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -87,6 +91,32 @@ class RegistrationForm extends Component {
             rules: [{ required: true, message: 'Please input your phone number!' }]
           })(
             <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="Date"
+        >
+          {getFieldDecorator('date', {
+            rules: [{
+              required: true,
+              message: 'Please choose valid date!'
+            }]
+          })(
+            <DatePicker/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="Time"
+        >
+          {getFieldDecorator('date', {
+            rules: [{
+              required: true,
+              message: 'Please choose time'
+            }]
+          })(
+            <TimePicker format='hh:mm a' use12Hours={true} minuteStep={30}/>
           )}
         </FormItem>
         <FormItem

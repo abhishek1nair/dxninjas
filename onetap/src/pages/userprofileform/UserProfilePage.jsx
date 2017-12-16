@@ -95,27 +95,27 @@ class RegistrationForm extends Component {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 },
+        sm: { span: 8 }
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 },
-      },
+        sm: { span: 16 }
+      }
     };
     const tailFormItemLayout = {
       wrapperCol: {
         xs: {
           span: 24,
-          offset: 0,
+          offset: 0
         },
         sm: {
           span: 16,
-          offset: 8,
-        },
-      },
+          offset: 8
+        }
+      }
     };
     const prefixSelector = getFieldDecorator('prefix', {
-      initialValue: '+91',
+      initialValue: '+91'
     })(
       <Select style={{ width: 70 }}>
         <Option value="86">+86</Option>
@@ -131,7 +131,7 @@ class RegistrationForm extends Component {
         >
           {getFieldDecorator('image', {
             rules: [{
-              required: true, message: 'Please take a screenshot',
+              required: true, message: 'Please take a screenshot'
             }, {
               validator: this.checkScreenshot
             }]
@@ -145,10 +145,10 @@ class RegistrationForm extends Component {
         >
           {getFieldDecorator('email', {
             rules: [{
-              type: 'email', message: 'The input is not valid E-mail',
+              type: 'email', message: 'The input is not valid E-mail'
             }, {
-              required: true, message: 'Please input your E-mail',
-            }],
+              required: true, message: 'Please input your E-mail'
+            }]
           })(
             <Input />
             )}
@@ -159,7 +159,7 @@ class RegistrationForm extends Component {
         >
           {getFieldDecorator('name', {
             rules: [{
-              required: true, message: 'Please input your name',
+              required: true, message: 'Please input your name'
             }]
           })(
             <Input />
@@ -170,7 +170,7 @@ class RegistrationForm extends Component {
           label="Phone Number"
         >
           {getFieldDecorator('phone', {
-            rules: [{ required: true, message: 'Please input your phone number' }],
+            rules: [{ required: true, message: 'Please input your phone number' }]
           })(
             <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
             )}
@@ -184,7 +184,8 @@ class RegistrationForm extends Component {
 }
 
 RegistrationForm.propTypes = {
-  screenshot: PropTypes.string
+  screenshot: PropTypes.string,
+  form: PropTypes.object.isRequired
 };
 
 const WrappedRegistrationForm = Form.create()(RegistrationForm);
