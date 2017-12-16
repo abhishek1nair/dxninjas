@@ -7,6 +7,52 @@ import RemainingToken from './RemainingToken.jsx';
 import '../../QueuePage.css';
 
 export default class QueuePage extends Component {
+  constructor() {
+    super();
+    this.startPolling = this.startPolling.bind(this);
+    this.stopPolling = this.stopPolling.bind(this);
+    this.state = {
+      count: 0
+    };
+  }
+
+  componentDidMount() {
+    this.startPolling();
+  }
+
+  componentWillUnmount() {
+    this.stopPolling();
+  }
+
+  startPolling() {
+    if (this.interval) return;
+    this.keepPolling = true;
+    this.asyncInterval(5 * 1000, () => { this.setState({ count: this.state.count + 1 }); });
+  }
+
+  stopPolling() {
+    this.keepPolling = false;
+    if (this.interval) clearTimeout(this.interval);
+  }
+
+  asyncInterval(intervalD, fn) {
+    const promise = fn();
+    const asyncTimeout = () => setTimeout(() => {
+      this.asyncInterval(intervalD, fn);
+    }, intervalD);
+    const assignNextInterval = () => {
+      if (!this.keepPolling) {
+        this.stopPolling();
+        return;
+      }
+      this.interval = asyncTimeout();
+    };
+
+    Promise.resolve(promise)
+    .then(assignNextInterval)
+    .catch(assignNextInterval);
+  }
+
   render() {
     return (
       <div className='c-queue__wrapper'>
@@ -21,8 +67,12 @@ export default class QueuePage extends Component {
                 <div className='clearfix c-appointment__token__wrappers'>
                   <Col span={12}>
                     <div className='clearfix c-appointment__big-token__wrappers'>
-                      <CurrentToken/>
-                      <NextToken/>
+                      <CurrentToken
+                        count={this.state.count}
+                      />
+                      <NextToken
+                        count={this.state.count}
+                      />
                     </div>
                   </Col>
                   <Col span={12}>
