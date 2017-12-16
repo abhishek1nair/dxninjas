@@ -2,12 +2,7 @@ import axios from 'axios';
 
 const API_ENDPOINT = 'http://10.0.1.2:5000';
 
-export const createUser = ({
-  name,
-  email,
-  phone,
-  faceId
-}) => axios({
+export const createUser = ({ name, email, phone, faceId }) => axios({
   method: 'POST',
   url: `${API_ENDPOINT}/user`,
   data: {
@@ -16,6 +11,11 @@ export const createUser = ({
     contact: phone,
     face_id: faceId
   }
+});
+
+export const getQueueAppointments = () => axios({
+  method: 'GET',
+  url: `${API_ENDPOINT}/appointments`
 });
 
 export const matchUser = ({

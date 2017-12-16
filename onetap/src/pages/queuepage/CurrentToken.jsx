@@ -32,18 +32,30 @@ export default class CurrentToken extends Component {
             Current Patient
           </div>
           <div style={{ display: 'inline-block', float: 'right' }}>
-            10
+            {
+              this.props.currentUser !== null
+                ? this.props.currentUser.id
+                : '--'
+            }
           </div>
         </div>
         <div className='c-current-token__body'>
-          <div className='c-current-token__inner-body'>
-            <div className={cx('c-current-token__name', { 'bounce animated': this.state.setClass })}>
-              Amit Chhajer
+          {
+            this.props.currentUser !== null
+            ? <div className='c-current-token__inner-body'>
+              <div className={cx('c-current-token__name', { 'bounce animated': this.state.setClass })}>
+                { this.props.currentUser.name }
+              </div>
+              <div className={cx('c-current-token__phone', { 'bounce animated': this.state.setClass })}>
+                { `*******${this.props.currentUser.contact.slice(10)}` }
+              </div>
             </div>
-            <div className={cx('c-current-token__phone', { 'bounce animated': this.state.setClass })}>
-              *******190
+            : <div className='c-current-token__inner-body'>
+              <div className='c-current-token__name'>
+                --
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
     );
@@ -51,5 +63,6 @@ export default class CurrentToken extends Component {
 }
 
 CurrentToken.propTypes = {
-  count: PropTypes.number.isRequired
+  count: PropTypes.number.isRequired,
+  currentUser: PropTypes.object
 };

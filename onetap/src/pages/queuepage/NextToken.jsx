@@ -31,20 +31,37 @@ export default class NextToken extends Component {
             Next Patient
           </div>
           <div style={{ display: 'inline-block', float: 'right' }}>
-            11
+            {
+              this.props.nextUser !== null
+                ? this.props.nextUser.id
+                : '--'
+            }
           </div>
         </div>
         <div className='c-next-token__body'>
-          <div className='c-next-token__inner-body'>
-            <div className={cx('c-next-token__name', { 'bounce animated': this.state.setClass })}>
-              Abhinav Lal
+          {
+            this.props.nextUser !== null
+            ? <div className='c-next-token__inner-body'>
+              <div className={cx('c-next-token__name', { 'bounce animated': this.state.setClass })}>
+                { this.props.nextUser.name }
+              </div>
+              <div className={cx('c-next-token__phone', { 'bounce animated': this.state.setClass })}>
+                { `*******${this.props.nextUser.contact.slice(10)}` }
+              </div>
             </div>
-            <div className={cx('c-next-token__phone', { 'bounce animated': this.state.setClass })}>
-              *******212
+            : <div className='c-current-token__inner-body'>
+              <div className='c-next-token__name'>
+                --
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
     );
   }
 }
+
+NextToken.propTypes = {
+  count: PropTypes.number.isRequired,
+  nextUser: PropTypes.object
+};
