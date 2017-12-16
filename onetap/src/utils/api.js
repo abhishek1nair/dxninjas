@@ -41,4 +41,23 @@ export const createAppointment = ({
   }
 });
 
+export const patchAppointment = ({
+  patchData,
+  appointmentId
+}) => axios({
+  method: 'PATCH',
+  url: `${API_ENDPOINT}/appointment/${appointmentId}`,
+  data: patchData
+});
+
+export const getAppointment = ({
+  faceIds,
+}) => {
+  const faceIdParams = faceIds.map(f => `face_ids=${f}`).join('&');
+  return axios({
+    method: 'GET',
+    url: `${API_ENDPOINT}/appointment?${faceIdParams}`
+  });
+};
+
 export default {};
