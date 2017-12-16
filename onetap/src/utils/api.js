@@ -27,4 +27,18 @@ export const matchUser = ({
   face_id: '5410001743ab64935982'
 });
 
+export const createAppointment = ({
+  phone,
+  appointment,
+  problem
+}) => axios({
+  method: 'POST',
+  url: `${API_ENDPOINT}/appointment`,
+  data: {
+    contact: phone,
+    appointment_time: appointment,
+    symptoms: problem
+  }
+});
+
 export default {};

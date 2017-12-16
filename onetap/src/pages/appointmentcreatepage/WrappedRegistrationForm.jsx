@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Input, Tooltip, Icon, Select, Checkbox, Button, DatePicker, TimePicker } from 'antd';
 import moment from 'moment';
 import 'moment/locale/en-gb';
+import { createAppointment } from '../../utils/api';
 
 moment.locale('en-gb');
 
@@ -11,20 +12,46 @@ const Option = Select.Option;
 const { TextArea } = Input;
 
 class RegistrationForm extends Component {
-  state = {
-    confirmDirty: false,
-    autoCompleteResult: []
-  };
-  handleSubmit = (e) => {
+  constructor() {
+    super();
+    this.checkConfirm = this.checkConfirm.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.createAppointmentFromData = this.createAppointmentFromData.bind(this);
+    this.state = {
+      confirmDirty: false,
+      autoCompleteResult: [],
+      success: false
+    };
+  }
+
+  createAppointmentFromData(values) {
+    return createAppointment({
+      phone: values.phone,
+      appointment: values.date.format('YYYY-MM-DD HH:MM'),
+      problem: values.illness
+    })
+    .then((res) => {
+      console.log('created appointment', res.data);
+      this.setState({
+        success: true
+      });
+    })
+    .catch((err) => {
+      console.log('error', err);
+    });
+  }
+
+  handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        this.createAppointmentFromData(values);
       }
     });
   }
 
-  checkConfirm = (rule, value, callback) => {
+  checkConfirm(rule, value, callback) {
     const form = this.props.form;
     if (value && this.state.confirmDirty) {
       form.validateFields(['confirm'], { force: true });
