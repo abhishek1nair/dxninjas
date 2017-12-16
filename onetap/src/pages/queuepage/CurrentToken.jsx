@@ -6,7 +6,7 @@ export default class CurrentToken extends Component {
       <div className='c-current-token__wrapper'>
         <div className=' clearfix c-current-token__title'>
           <div style={{ display: 'inline-block', float: 'left' }}>
-            In progress
+            Current Patient
           </div>
           <div style={{ display: 'inline-block', float: 'right' }}>
             10
@@ -18,7 +18,7 @@ export default class CurrentToken extends Component {
               Amit Chhajer
             </div>
             <div className='c-current-token__phone'>
-              ********90
+              *******190
             </div>
           </div>
         </div>
