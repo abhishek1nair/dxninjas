@@ -1,0 +1,11 @@
+.c-appointment__wrapper {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.c-appointment__title {
+  font-size: 42px;
+  height: 50px;
+  line-height: 50px;
+  margin-bottom: 30px;
+}
