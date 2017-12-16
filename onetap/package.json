@@ -2,6 +2,14 @@
   "name": "onetap",
   "version": "0.1.0",
   "private": true,
+  "devDependencies": {
+    "babel-eslint": "7.1.1",
+    "eslint": "3.17.1",
+    "eslint-config-airbnb-base": "11.1.1",
+    "eslint-config-practo": "0.1.9",
+    "eslint-plugin-import": "2.2.0",
+    "eslint-plugin-react": "6.10.0"
+  },
   "dependencies": {
     "antd": "^3.0.1",
     "autoprefixer": "^7.2.3",
@@ -28,6 +36,7 @@
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
+    "material-ui": "^0.20.0",
     "moment": "^2.19.4",
     "node-sass": "^4.7.2",
     "path": "^0.12.7",
@@ -39,6 +48,7 @@
     "react-router": "^4.2.0",
     "react-scripts": "1.0.17",
     "react-select": "^1.1.0",
+    "react-webcam": "^0.2.0",
     "redis": "^2.8.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
