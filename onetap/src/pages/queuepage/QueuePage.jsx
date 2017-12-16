@@ -27,7 +27,7 @@ export default class QueuePage extends Component {
   startPolling() {
     if (this.interval) return;
     this.keepPolling = true;
-    this.asyncInterval(2 * 1000, () => { this.setState({ count: this.state.count + 1 }); });
+    this.asyncInterval(5 * 1000, () => { this.setState({ count: this.state.count + 1 }); });
   }
 
   stopPolling() {
@@ -67,8 +67,12 @@ export default class QueuePage extends Component {
                 <div className='clearfix c-appointment__token__wrappers'>
                   <Col span={12}>
                     <div className='clearfix c-appointment__big-token__wrappers'>
-                      <CurrentToken/>
-                      <NextToken/>
+                      <CurrentToken
+                        count={this.state.count}
+                      />
+                      <NextToken
+                        count={this.state.count}
+                      />
                     </div>
                   </Col>
                   <Col span={12}>

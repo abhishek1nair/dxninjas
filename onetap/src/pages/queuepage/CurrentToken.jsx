@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 import isEqual from 'lodash/isEqual';
+import PropTypes from 'prop-types';
 
 export default class CurrentToken extends Component {
   constructor() {
     super();
+    this.toggleClass = this.toggleClass.bind(this);
     this.state = {
       setClass: false
     };
   }
-  componentDidMount() {
+
+  toggleClass() {
+    const { setClass } = this.state;
     this.setState({
-      setClass: true
+      setClass: !setClass
     });
   }
+
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props, nextProps)) {
-      console.log('triggered');
+      this.toggleClass();
     }
   }
   render() {
@@ -44,3 +49,7 @@ export default class CurrentToken extends Component {
     );
   }
 }
+
+CurrentToken.propTypes = {
+  count: PropTypes.number.isRequired
+};
