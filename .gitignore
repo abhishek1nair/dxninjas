@@ -1,0 +1,10 @@
+.DS_Store
+*.pyc
+*.egg-info
+dist/
+MANIFEST
+build/
+node_modules
+react/js
+*~
+
