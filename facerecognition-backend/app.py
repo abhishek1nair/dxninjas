@@ -6,6 +6,7 @@ import json
 from flask import jsonify
 from flask import request
 from flask_cors import CORS
+import datetime
 
 app = Flask(__name__)
 app.config['MYSQL_USER'] = 'root'
@@ -43,8 +44,6 @@ def get_user_details(face_id):
 
     return jsonify(data[0])
 
-    return resp
-
 
 @app.route('/user', methods=['POST'])
 def create_user():
@@ -72,11 +71,9 @@ def update_appointment(appointment_id):
     db = mysql.connection
     cur = db.cursor()
     payload = request.get_json()
-    appointment_id = payload.get('appointment_id')
     query = ""
     params = None
-    print payload
-    print hasattr(payload, 'checkin_time')
+
     if 'checkin_time' in payload:
         query += "checkin_time=%s"
         params = (payload.get('checkin_time'),)
@@ -106,7 +103,7 @@ def create_appointment():
         contact = payload.get('contact')
         symptoms = payload.get('symptoms')
         user = get_user_by_contact(contact)
-        print user
+
         query = "INSERT into appointments (user_id, appointment_time, symptoms) VALUES(%s,%s,%s)"
         params = (user[0], appointment_time, symptoms)
 
@@ -123,7 +120,43 @@ def create_appointment():
         cur.execute(query, (ids_string,))
         data = dictfetchall(cur)
 
-        return jsonify(data[0])
+        if data:
+            return jsonify(data[0])
+        else:
+            return Response(status=404)
+
+
+@app.route('/appointments', methods=['GET'])
+def get_appointments():
+    db = mysql.connection
+    cur = db.cursor()
+    now = datetime.datetime.now()
+    results = {}
+    params = (now.strftime("%Y-%m-%d"),)
+    query = "SELECT AVG(TIMESTAMPDIFF(SECOND, consultation_start, consultation_end)) as diff from appointments where DATE(appointment_time)=%s and consultation_start is not null and consultation_end is not null"
+    cur.execute(query, params)
+    data = cur.fetchone()
+    results['avg_consultation_time'] = int(data[0] / 60) if data[0] else 0
+    query = "SELECT AVG(diff) from (SELECT TIMESTAMPDIFF(SECOND, appointment_time,checkin_time) as diff from appointments where DATE(appointment_time)=%s and checkin_time is not null) a where diff >0"
+    cur.execute(query, params)
+    data = cur.fetchone()
+    results['avg_wait_time'] = int(data[0] / 60) if data[0] else 0
+    query = "SELECT * from appointments where checkin_time is  not null and consultation_end is null and DATE(appointment_time)=%s order by appointment_time"
+    cur.execute(query, params)
+
+    data = dictfetchall(cur)
+    json_data = []
+    for x in data:
+        obj = {}
+        obj['id'] = x.get('id')
+        obj['appointment_time'] = x.get('appointment_time').strftime("%Y-%m-%d %H:%M")
+        obj['consultation_start'] = x.get('consultation_start').strftime(
+            "%Y-%m-%d %H:%M") if x.get('consultation_start') else None
+
+        json_data.append(obj)
+
+    results['appointments'] = json_data
+    return jsonify(results)
 
 
 def get_user_by_contact(contact):
