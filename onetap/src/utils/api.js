@@ -18,4 +18,13 @@ export const createUser = ({
   }
 });
 
+export const matchUser = ({
+  faceId
+}) => Promise.resolve({
+  name: 'Abhishek',
+  email_id: 'abhishek.alchemist@gmail.com',
+  contact: '+919686202991',
+  face_id: '5410001743ab64935982'
+});
+
 export default {};

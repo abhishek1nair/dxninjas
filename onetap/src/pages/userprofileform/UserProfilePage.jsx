@@ -41,7 +41,8 @@ class RegistrationForm extends Component {
         faceId
       });
     })
-    .then(() => {
+    .then((res) => {
+      console.log(res);
       this.setState({ loading: false });
     })
     .catch((err) => {

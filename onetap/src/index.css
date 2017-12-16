@@ -3,3 +3,55 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.c-loader--circle {
+  width: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 auto;
+}
+.c-loader--circle .circle {
+  margin-left: 10px;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  display: inline-block;
+  background: #414146;
+  animation-duration: 1s;
+  animation-name: glow;
+  animation-iteration-count: infinite;
+}
+.c-loader--circle .circle-one {
+  animation-delay: 0s;
+}
+.c-loader--circle .circle-two {
+  animation-delay: 0.25s;
+}
+.c-loader--circle .circle-three {
+  animation-delay: 0.5s;
+}
+@-webkit-keyframes glow {
+  from {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+@keyframes glow {
+  from {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
