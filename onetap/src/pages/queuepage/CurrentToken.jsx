@@ -32,7 +32,11 @@ export default class CurrentToken extends Component {
             Current Patient
           </div>
           <div style={{ display: 'inline-block', float: 'right' }}>
-            10
+            {
+              this.props.currentUser !== null
+                ? this.props.currentUser.id
+                : '--'
+            }
           </div>
         </div>
         <div className='c-current-token__body'>

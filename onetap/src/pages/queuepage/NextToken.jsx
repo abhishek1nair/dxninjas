@@ -31,7 +31,11 @@ export default class NextToken extends Component {
             Next Patient
           </div>
           <div style={{ display: 'inline-block', float: 'right' }}>
-            11
+            {
+              this.props.nextUser !== null
+                ? this.props.nextUser.id
+                : '--'
+            }
           </div>
         </div>
         <div className='c-next-token__body'>
@@ -42,7 +46,7 @@ export default class NextToken extends Component {
                 { this.props.nextUser.name }
               </div>
               <div className={cx('c-next-token__phone', { 'bounce animated': this.state.setClass })}>
-                { `*******${this.props.nextUser.contact.slice(7)}` }
+                { `*******${this.props.nextUser.contact.slice(10)}` }
               </div>
             </div>
             : <div className='c-current-token__inner-body'>
