@@ -9,28 +9,24 @@ import '../../QueuePage.css';
 export default class QueuePage extends Component {
   render() {
     return (
-      <div className='c-appointment__wrapper'>
+      <div className='c-queue__wrapper'>
         <Row>
           <Col span={2}/>
           <Col span={22}>
             <Row>
               <Col span={22}>
-                <div className='c-appointment__title'>
-                  Pranjal's Clinic
+                <div className='c-queue__title'>
+                  Dr. Pranjal Kumar
                 </div>
-                <div className='clearfix'>
+                <div className='clearfix c-appointment__token__wrappers'>
                   <Col span={12}>
                     <CurrentToken/>
-                  </Col>
-                  <Col span={12}>
                     <NextToken/>
                   </Col>
+                  <Col span={12}>
+                    <RemainingToken/>
+                  </Col>
                 </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={22}>
-                <RemainingToken/>
               </Col>
             </Row>
           </Col>

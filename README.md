@@ -34,7 +34,6 @@ nvm use 8
 ```
 
 ### Move into the FE Folder
-Add the following line to .bash_profile
 
 ```bash
  cd ./onetap

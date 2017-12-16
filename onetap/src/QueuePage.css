@@ -1,0 +1,49 @@
+.c-queue__wrapper {
+  margin-top: 10px;
+}
+
+.c-queue__title {
+  font-size: 42px;
+  padding: 10px;
+  line-height: 50px;
+  margin-bottom: 10px;
+  background: white;
+  box-shadow: 0 -1px 5px 0 #e5e5e8;
+}
+
+.c-appointment__token__wrappers {
+  background: white;
+  padding: 10px;
+  box-shadow: 0 -1px 5px 0 #e5e5e8;
+}
+
+.c-current-token__wrapper {
+  height: 300px;
+  margin-right: 20px;
+  padding: 20px;
+  background: #01a400;
+  color: #414146;
+  margin-bottom: 10px;
+}
+
+.c-next-token__wrapper {
+  height: 300px;
+  margin-right: 20px;
+  padding: 20px;
+  background: #ffeb01;
+  color: #414146;
+}
+
+.c-remaining-token__wrapper {
+  width: 100%;
+  height: 50px;
+  padding: 0px 10px;
+  line-height: 50px;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #414146;
+}
+
+.c-remaining-token__wrapper:last-child {
+  margin-bottom: 0px;
+}
