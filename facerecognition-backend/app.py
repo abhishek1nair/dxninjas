@@ -115,6 +115,7 @@ def create_appointment():
         print request.args
         face_ids = request.args.getlist('face_ids')
         users = get_user_by_face(face_ids)
+        print users
         ids_string = ''.join(str(x.get('id')) for x in users)
         query = "SELECT * from appointments where user_id in (%s) order by appointment_time"
         cur.execute(query, (ids_string,))
@@ -156,6 +157,7 @@ def get_appointments():
         json_data.append(obj)
 
     results['appointments'] = json_data
+
     return jsonify(results)
 
 
@@ -173,10 +175,12 @@ def get_user_by_contact(contact):
 def get_user_by_face(face_ids):
     db = mysql.connection
     cur = db.cursor()
-    query = "SELECT * from user_profiles as u join user_face_id as uf on u.id=uf.user_id where face_id in (%s)"
-    face_param = ''.join(str(x) for x in face_ids)
+    face_param = ','.join(str(x) for x in face_ids)
+    query = "SELECT * from user_profiles as u join user_face_id as uf on u.id=uf.user_id where face_id in ({face_param})".format(
+        face_param=face_param)
+    print query
     params = (face_param,)
-    cur.execute(query, params)
+    cur.execute(query)
 
     return dictfetchall(cur)
 
