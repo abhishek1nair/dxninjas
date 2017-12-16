@@ -57,7 +57,7 @@ class RegistrationForm extends Component {
       }
     };
     const prefixSelector = getFieldDecorator('prefix', {
-      initialValue: '86'
+      initialValue: '+91'
     })(
       <Select style={{ width: 70 }}>
         <Option value="86">+91</Option>
@@ -104,6 +104,7 @@ class RegistrationForm extends Component {
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           {getFieldDecorator('agreement', {
+            rules: [{ required: true, message: 'Please agree to the T&C' }],
             valuePropName: 'checked'
           })(
             <Checkbox>I agree to Practo T&C</Checkbox>
