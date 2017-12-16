@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Webcam from 'react-webcam';
 import { Form, Input, Select, Button, Row, Col } from 'antd';
+import '../../AppointmentPage.css';
+import { enroll } from '../../utils/imageHandler';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -12,13 +14,26 @@ class RegistrationForm extends Component {
     super();
     this.handleConfirmBlur = this.handleConfirmBlur.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.checkPassword = this.checkPassword.bind(this);
     this.checkConfirm = this.checkConfirm.bind(this);
     this.checkScreenshot = this.checkScreenshot.bind(this);
     this.state = {
       confirmDirty: false,
       autoCompleteResult: [],
+      loading: false
     };
+  }
+
+  createUser(values) {
+    enroll({
+      image: values.screenshot,
+      subjectId: values.phone
+    }).then((response) => {
+      return response.data.face_id;
+    }).then(faceId => {
+
+    }).catch((err) => {
+      this.setState({ loading: false });
+    });
   }
 
   handleSubmit(e) {
@@ -33,15 +48,6 @@ class RegistrationForm extends Component {
   handleConfirmBlur(e) {
     const value = e.target.value;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  }
-
-  checkPassword(rule, value, callback) {
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
   }
 
   checkConfirm(rule, value, callback) {
@@ -61,7 +67,7 @@ class RegistrationForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.screenshot != nextProps.screenshot) {
+    if (this.props.screenshot !== nextProps.screenshot) {
       this.props.form.setFieldsValue({
         image: nextProps.screenshot
       });
@@ -124,9 +130,9 @@ class RegistrationForm extends Component {
         >
           {getFieldDecorator('email', {
             rules: [{
-              type: 'email', message: 'The input is not valid E-mail!',
+              type: 'email', message: 'The input is not valid E-mail',
             }, {
-              required: true, message: 'Please input your E-mail!',
+              required: true, message: 'Please input your E-mail',
             }],
           })(
             <Input />
@@ -134,30 +140,14 @@ class RegistrationForm extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Password"
+          label="Name"
         >
-          {getFieldDecorator('password', {
+          {getFieldDecorator('name', {
             rules: [{
-              required: true, message: 'Please input your password!',
-            }, {
-              validator: this.checkConfirm,
-            }],
+              required: true, message: 'Please input your name',
+            }]
           })(
-            <Input type="password" />
-            )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Confirm Password"
-        >
-          {getFieldDecorator('confirm', {
-            rules: [{
-              required: true, message: 'Please confirm your password!',
-            }, {
-              validator: this.checkPassword,
-            }],
-          })(
-            <Input type="password" onBlur={this.handleConfirmBlur} />
+            <Input />
             )}
         </FormItem>
         <FormItem
@@ -165,7 +155,7 @@ class RegistrationForm extends Component {
           label="Phone Number"
         >
           {getFieldDecorator('phone', {
-            rules: [{ required: true, message: 'Please input your phone number!' }],
+            rules: [{ required: true, message: 'Please input your phone number' }],
           })(
             <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
             )}
@@ -179,7 +169,7 @@ class RegistrationForm extends Component {
 }
 
 RegistrationForm.propTypes = {
-  screenshot: PropTypes.string.isRequired
+  screenshot: PropTypes.string
 };
 
 const WrappedRegistrationForm = Form.create()(RegistrationForm);
