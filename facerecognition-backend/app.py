@@ -75,19 +75,15 @@ def update_appointment(appointment_id):
     params = None
 
     if 'checkin_time' in payload:
-        query += "checkin_time=%s"
+        query = "checkin_time=%s where checkin_time is not null"
         params = (payload.get('checkin_time'),)
     if 'consultation_start' in payload:
-        if query:
-            query += query + ", "
-        query += "consultation_start=%s"
-        params = (params + (payload.get('consultation_start'),)) if params else (payload.get('consultation_start'),)
+        query = "consultation_start=%s where consultation_start is not null"
+        params = (payload.get('consultation_start'),)
     if 'consultation_end' in payload:
-        if query:
-            query += query + ", "
-        query = "consultation_end=%s"
-        params = (params + (payload.get('consultation_end'),)) if params else (payload.get('consultation_end'),)
-    query = "UPDATE appointments SET " + query + " where id=%s"
+        query = "consultation_end=%s where consultation_end is not null"
+        params = (payload.get('consultation_end'),)
+    query = "UPDATE appointments SET " + query + " and id=%s"
     cur.execute(query, params + (appointment_id,))
     db.commit()
     return 'Done'
@@ -114,12 +110,15 @@ def create_appointment():
     elif request.method == 'GET':
         face_ids = request.args.getlist('face_ids')
         users = get_user_by_face(face_ids)
-        ids_string = ''.join(str(x.get('id')) for x in users)
-        query = "SELECT * from appointments where user_id in (%s) order by appointment_time"
-        cur.execute(query, (ids_string,))
+        now = datetime.datetime.now()
+        ids_string = ','.join(("'" + str(x.get('id')) + "'") for x in users)
+        query = "SELECT ap.appointment_time, ap.id, u.name, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where user_id in ({user_ids}) and DATE(ap.appointment_time) = %s order by appointment_time".format(
+            user_ids=ids_string)
+        cur.execute(query, (now.strftime("%Y-%m-%d"),))
         data = dictfetchall(cur)
-
         if data:
+            result = data[0]
+            result['appointment_time'] = result['appointment_time'].strftime("%Y-%d-%m %H:%M")
             return jsonify(data[0])
         else:
             return Response(status=404)
@@ -140,7 +139,7 @@ def get_appointments():
     cur.execute(query, params)
     data = cur.fetchone()
     results['avg_wait_time'] = int(data[0] / 60) if data[0] else 0
-    query = "SELECT * from appointments where checkin_time is  not null and consultation_end is null and DATE(appointment_time)=%s order by appointment_time"
+    query = "SELECT ap.appointment_time, ap.consultation_start, ap.id, u.name, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where checkin_time is  not null and consultation_end is null and DATE(appointment_time)=%s order by appointment_time"
     cur.execute(query, params)
 
     data = dictfetchall(cur)
@@ -151,7 +150,8 @@ def get_appointments():
         obj['appointment_time'] = x.get('appointment_time').strftime("%Y-%m-%d %H:%M")
         obj['consultation_start'] = x.get('consultation_start').strftime(
             "%Y-%m-%d %H:%M") if x.get('consultation_start') else None
-
+        obj['name'] = x.get('name')
+        obj['contact'] = x.get('contact')
         json_data.append(obj)
 
     results['appointments'] = json_data
@@ -173,7 +173,7 @@ def get_user_by_contact(contact):
 def get_user_by_face(face_ids):
     db = mysql.connection
     cur = db.cursor()
-    face_param = ','.join(("'" + str(x) + "'") pfor x in face_ids)
+    face_param = ','.join(("'" + str(x) + "'") for x in face_ids)
     query = "SELECT * from user_profiles as u join user_face_id as uf on u.id=uf.user_id where face_id in ({face_param})".format(
         face_param=face_param)
     cur.execute(query)
