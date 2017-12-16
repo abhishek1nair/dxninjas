@@ -20,8 +20,10 @@ export default class QueuePage extends Component {
                 </div>
                 <div className='clearfix c-appointment__token__wrappers'>
                   <Col span={12}>
-                    <CurrentToken/>
-                    <NextToken/>
+                    <div className='clearfix c-appointment__big-token__wrappers'>
+                      <CurrentToken/>
+                      <NextToken/>
+                    </div>
                   </Col>
                   <Col span={12}>
                     <RemainingToken/>

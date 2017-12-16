@@ -5,8 +5,8 @@ export default class RemainingToken extends Component {
     super();
     this.state = {
       colorsArray: [
-        '#caabdf',
-        '#ffbbff'
+        '#ffd2ac',
+        '#ffebb3'
       ],
       patientList: [
         {
@@ -19,7 +19,7 @@ export default class RemainingToken extends Component {
         },
         {
           id: 14,
-          name: 'Aayushi Kul'
+          name: 'Aayushi K'
         },
         {
           id: 15,
@@ -46,12 +46,15 @@ export default class RemainingToken extends Component {
   }
   render() {
     return (
-      <div>
+      <div className='clearfix c-remaining-token__full-wrapper'>
+        <div className='c-remaining-token__title'>
+          Waiting List
+        </div>
         {
           this.state.patientList.map((data, index) => {
             return (
               <div className='c-remaining-token__wrapper' style={{ background: this.state.colorsArray[index % 2] }}>
-                { data.name }
+                { data.id }&nbsp;&nbsp;{ data.name }
               </div>
             );
           })
