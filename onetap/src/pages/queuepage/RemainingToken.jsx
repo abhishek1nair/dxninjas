@@ -11,35 +11,43 @@ export default class RemainingToken extends Component {
       patientList: [
         {
           id: 12,
-          name: 'Vikrant Mahajan'
+          name: 'Vikrant Mahajan',
+          phone: '*******990'
         },
         {
           id: 13,
-          name: 'Abhishek Nair'
+          name: 'Abhishek Nair',
+          phone: '*******990'
         },
         {
           id: 14,
-          name: 'Aayushi K'
+          name: 'Aayushi K',
+          phone: '*******990'
         },
         {
           id: 15,
-          name: 'Pranjal Kumar'
+          name: 'Pranjal Kumar',
+          phone: '*******990'
         },
         {
           id: 16,
-          name: 'Mayank Dharwa'
+          name: 'Mayank Dharwa',
+          phone: '*******990'
         },
         {
           id: 18,
-          name: 'Debarko De'
+          name: 'Debarko De',
+          phone: '*******990'
         },
         {
           id: 20,
-          name: 'Nitesh Garg'
+          name: 'Nitesh Garg',
+          phone: '*******990'
         },
         {
           id: 23,
-          name: 'Shashank ND'
+          name: 'Shashank ND',
+          phone: '*******990'
         }
       ]
     };
@@ -53,8 +61,13 @@ export default class RemainingToken extends Component {
         {
           this.state.patientList.map((data, index) => {
             return (
-              <div className='c-remaining-token__wrapper' style={{ background: this.state.colorsArray[index % 2] }}>
-                { data.id }&nbsp;&nbsp;{ data.name }
+              <div key={`c-remaining-token__wrapper-${index}`} className='clearfix c-remaining-token__wrapper' style={{ background: this.state.colorsArray[index % 2] }}>
+                <div style={{ display: 'inline-block', float: 'left' }}>
+                  { data.id }&nbsp;&nbsp;{ data.name }
+                </div>
+                <div style={{ display: 'inline-block', float: 'right' }}>
+                  { data.phone }
+                </div>
               </div>
             );
           })
