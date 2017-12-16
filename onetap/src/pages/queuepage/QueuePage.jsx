@@ -3,6 +3,8 @@ import { Row, Col } from 'antd';
 import CurrentToken from './CurrentToken.jsx';
 import NextToken from './NextToken.jsx';
 import RemainingToken from './RemainingToken.jsx';
+import { getQueueAppointments } from '../../utils/api';
+
 
 import '../../QueuePage.css';
 
@@ -12,7 +14,8 @@ export default class QueuePage extends Component {
     this.startPolling = this.startPolling.bind(this);
     this.stopPolling = this.stopPolling.bind(this);
     this.state = {
-      count: 0
+      count: 0,
+      response: null
     };
   }
 
@@ -27,7 +30,7 @@ export default class QueuePage extends Component {
   startPolling() {
     if (this.interval) return;
     this.keepPolling = true;
-    this.asyncInterval(5 * 1000, () => { this.setState({ count: this.state.count + 1 }); });
+    this.asyncInterval(5 * 1000);
   }
 
   stopPolling() {
@@ -35,10 +38,9 @@ export default class QueuePage extends Component {
     if (this.interval) clearTimeout(this.interval);
   }
 
-  asyncInterval(intervalD, fn) {
-    const promise = fn();
+  asyncInterval(intervalD) {
     const asyncTimeout = () => setTimeout(() => {
-      this.asyncInterval(intervalD, fn);
+      this.asyncInterval(intervalD);
     }, intervalD);
     const assignNextInterval = () => {
       if (!this.keepPolling) {
@@ -47,10 +49,12 @@ export default class QueuePage extends Component {
       }
       this.interval = asyncTimeout();
     };
-
-    Promise.resolve(promise)
-    .then(assignNextInterval)
-    .catch(assignNextInterval);
+    getQueueAppointments().then((response) => {
+      this.setState({ response: response.data });
+      assignNextInterval();
+    }).catch(() => {
+      assignNextInterval();
+    });
   }
 
   render() {
@@ -69,14 +73,30 @@ export default class QueuePage extends Component {
                     <div className='clearfix c-appointment__big-token__wrappers'>
                       <CurrentToken
                         count={this.state.count}
+                        currentUser={this.state.response
+                          && this.state.response.appointments.length > 0
+                            ? this.state.response.appointments[0]
+                            : null
+                          }
                       />
                       <NextToken
                         count={this.state.count}
+                        nextUser={this.state.response
+                          && this.state.response.appointments.length > 1
+                            ? this.state.response.appointments[1]
+                            : null
+                          }
                       />
                     </div>
                   </Col>
                   <Col span={12}>
-                    <RemainingToken/>
+                    <RemainingToken
+                      moreUsers={this.state.response
+                          && this.state.response.appointments.length > 2
+                            ? this.state.response.appointments.slice(2)
+                            : null
+                          }
+                    />
                   </Col>
                 </div>
               </Col>
