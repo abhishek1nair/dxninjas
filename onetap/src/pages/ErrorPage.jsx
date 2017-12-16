@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Fourofour from './Fourofour.jsx';
 
-class Fourox extends React.Component {
+class Fourox extends Component {
   render() {
     return (
       <div className="main-box">
