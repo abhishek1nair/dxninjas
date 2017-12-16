@@ -8,6 +8,7 @@ import QueuePage from './pages/queuepage/QueuePage.jsx';
 import Error404 from './pages/ErrorPage.jsx';
 
 import './App.css';
+import './Animate.css';
 
 class App extends Component {
   render() {
