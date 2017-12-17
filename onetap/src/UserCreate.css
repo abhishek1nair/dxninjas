@@ -1,9 +1,9 @@
-.c-appointment__wrapper {
-  margin-top: 20px;
+.c-usercreate__wrapper {
+  margin-top: 10px;
   margin-bottom: 50px;
 }
 
-.c-appointment__title {
+.c-usercreate__title {
   border-radius: 2px;
   font-size: 24px;
   padding: 10px;
@@ -13,13 +13,13 @@
   box-shadow: 0 -1px 5px 0 #e5e5e8;
 }
 
-.c-appointment__body__wrapper {
+.c-usercreate__body--wrapper {
   background: white;
   padding: 10px;
 }
 
-.c-appointment__title--2 {
-  font-size: 18px;
+.c-usercreate__title--2 {
+  font-size: 24px;
   border-bottom: 1px solid #b4b4be;
   margin-bottom: 10px;
 }

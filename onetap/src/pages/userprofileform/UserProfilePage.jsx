@@ -6,6 +6,8 @@ import '../../AppointmentPage.css';
 import { enroll } from '../../utils/imageHandler';
 import { createUser } from '../../utils/api';
 
+import '../../UserCreate.css';
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -111,8 +113,8 @@ class RegistrationForm extends Component {
           offset: 0
         },
         sm: {
-          span: 16,
-          offset: 8
+          span: 24,
+          offset: 19
         }
       }
     };
@@ -199,42 +201,45 @@ export default class UserProfilePage extends Component {
   constructor() {
     super();
     this.webcam = null;
-    this.setRef = this.setRef.bind(this);
     this.capture = this.capture.bind(this);
     this.state = {
       screenshot: null
     };
   }
-  setRef(webcam) {
-    this.webcam = webcam;
-  }
   capture() {
-    this.setState({ screenshot: this.webcam.getScreenshot() });
+    this.setState({ screenshot: this.iWebcam.getScreenshot() });
   }
   render() {
     return (
-      <div className='c-appointment__wrapper'>
+      <div className='c-usercreate__wrapper'>
         <Row>
           <Col span={2} />
           <Col span={20}>
-            <div className='c-appointment__title'>
-              Create User
+            <div className='c-usercreate__title'>
+              Patient Registration
             </div>
-            <div>
+            <div className='clearfix c-usercreate__body--wrapper'>
               <Col span={10}>
+                <div className='c-usercreate__title--2'>
+                  Patient Photo
+                </div>
                 <Webcam
                   audio={false}
                   height={320}
-                  ref={this.setRef}
+                  ref={(f) => { this.iWebcam = f; } }
                   screenshotFormat="image/jpeg"
-                  width={400}
+                  width={435}
                 />
-                <div>
+                <div style={{ marginTop: '10px' }}>
                   <Button style={{ marginBottom: '20px' }} onClick={this.capture} type="primary">Capture</Button>
                 </div>
                 {this.state.screenshot ? <img alt='captured' src={this.state.screenshot} /> : null}
               </Col>
+              <Col span={2} />
               <Col span={10}>
+                <div className='c-usercreate__title--2'>
+                  Patient Details
+                </div>
                 <WrappedRegistrationForm screenshot={this.state.screenshot} />
               </Col>
             </div>

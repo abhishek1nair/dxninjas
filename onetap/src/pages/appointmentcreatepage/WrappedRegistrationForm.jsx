@@ -76,8 +76,8 @@ class RegistrationForm extends Component {
         sm: { span: 8 }
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
+        xs: { span: 12 },
+        sm: { span: 12 }
       }
     };
 
@@ -85,11 +85,23 @@ class RegistrationForm extends Component {
       wrapperCol: {
         xs: {
           span: 24,
-          offset: 0
+          offset: 6
         },
         sm: {
           span: 16,
-          offset: 8
+          offset: 10
+        }
+      }
+    };
+    const tcFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 6
+        },
+        sm: {
+          span: 16,
+          offset: 9
         }
       }
     };
@@ -114,7 +126,7 @@ class RegistrationForm extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Date"
+          label="Date & Time"
         >
           {getFieldDecorator('date', {
             rules: [{
@@ -122,13 +134,8 @@ class RegistrationForm extends Component {
               message: 'Please choose valid date!'
             }]
           })(
-            <DatePicker/>
+            <DatePicker style={{ marginRight: '11px' }}/>
           )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="Time"
-        >
           {getFieldDecorator('time', {
             rules: [{
               required: true,
@@ -148,7 +155,7 @@ class RegistrationForm extends Component {
             <TextArea rows={6} placeholder='Describe your Illness...'/>
           )}
         </FormItem>
-        <FormItem {...tailFormItemLayout}>
+        <FormItem {...tcFormItemLayout}>
           {getFieldDecorator('agreement', {
             rules: [{ required: true, message: 'Please agree to the T&C' }],
             valuePropName: 'checked'
