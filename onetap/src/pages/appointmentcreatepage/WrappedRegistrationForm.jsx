@@ -25,6 +25,14 @@ class RegistrationForm extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.userPhone) {
+      this.props.form.setFieldsValue({
+        phone: this.props.userPhone
+      });
+    }
+  }
+
   createAppointmentFromData(values) {
     return createAppointment({
       phone: values.phone,
@@ -181,7 +189,8 @@ class RegistrationForm extends Component {
 }
 
 RegistrationForm.propTypes = {
-  form: PropTypes.object.isRequired
+  form: PropTypes.object.isRequired,
+  userPhone: PropTypes.string
 };
 
 const WrappedRegistrationForm = Form.create()(RegistrationForm);

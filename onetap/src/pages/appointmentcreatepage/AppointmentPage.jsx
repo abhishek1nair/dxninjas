@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Button } from 'antd';
 import Webcam from 'react-webcam';
 import WrappedRegistrationForm from './WrappedRegistrationForm.jsx';
@@ -24,6 +25,7 @@ export default class AppointmentPage extends Component {
   }
 
   render() {
+    const { location } = this.props;
     return (
       <div className='c-appointment__wrapper'>
         <Row>
@@ -36,7 +38,7 @@ export default class AppointmentPage extends Component {
               <div className='c-appointment__title--2'>
                 Patient Details
               </div>
-              <WrappedRegistrationForm/>
+              <WrappedRegistrationForm userPhone={location.query.phone} />
             </div>
           </Col>
           <Col span={6} />
@@ -45,3 +47,7 @@ export default class AppointmentPage extends Component {
     );
   }
 }
+
+AppointmentPage.propTypes = {
+  location: PropTypes.object.isRequired
+};

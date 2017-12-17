@@ -46,7 +46,7 @@ class RegistrationForm extends Component {
     .then((res) => {
       console.log(res);
       this.setState({ loading: false });
-      window.location.hash = '/appointment';
+      window.location.hash = `/appointment?phone=${values.phone}`;
     })
     .catch((err) => {
       this.setState({ loading: false });
