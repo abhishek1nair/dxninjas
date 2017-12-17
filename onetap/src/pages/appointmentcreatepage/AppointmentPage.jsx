@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Button } from 'antd';
 import Webcam from 'react-webcam';
 import WrappedRegistrationForm from './WrappedRegistrationForm.jsx';
-
+import { recognize } from '../../utils/imageHandler';
 import '../../AppointmentPage.css';
 
 export default class AppointmentPage extends Component {
@@ -11,7 +11,10 @@ export default class AppointmentPage extends Component {
     super();
     this.capture = this.capture.bind(this);
     this.state = {
-      screenshot: null
+      screenshot: null,
+      name: null,
+      contact: null,
+      email: null
     };
   }
 
@@ -24,29 +27,14 @@ export default class AppointmentPage extends Component {
     return (
       <div className='c-appointment__wrapper'>
         <Row>
-          <Col span={2}/>
-          <Col span={20}>
-            <div className='c-appointment__title'>
+          <Col span={6} />
+          <Col span={12}>
+            <div className='c-appointment__title' style={{ textAlign: 'center' }}>
               Book Appointment
             </div>
-            <div>
-              <Col span={10}>
-                <Webcam
-                  audio={false}
-                  height={320}
-                  ref={(f) => { this.iWebcam = f; } }
-                  screenshotFormat="image/jpeg"
-                  width={400}
-                />
-                <Button style={{ marginBottom: '20px' }} onClick={this.capture} type="primary">Capture</Button>
-                {this.state.screenshot ? <img alt='captured' src={this.state.screenshot} /> : null}
-              </Col>
-              <Col span={10}>
-                <WrappedRegistrationForm/>
-              </Col>
-            </div>
+            <WrappedRegistrationForm/>
           </Col>
-          <Col span={2}/>
+          <Col span={6} />
         </Row>
       </div>
     );

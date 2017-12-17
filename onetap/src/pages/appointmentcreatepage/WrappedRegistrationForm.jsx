@@ -20,24 +20,30 @@ class RegistrationForm extends Component {
     this.state = {
       confirmDirty: false,
       autoCompleteResult: [],
-      success: false
+      success: false,
+      loading: false
     };
   }
 
   createAppointmentFromData(values) {
     return createAppointment({
       phone: values.phone,
-      appointment: values.date.format('YYYY-MM-DD HH:MM'),
+      appointment: `${values.date.format('YYYY-MM-DD')} ${values.time.format('HH:mm')}`,
       problem: values.illness
     })
     .then((res) => {
       console.log('created appointment', res.data);
       this.setState({
-        success: true
+        success: true,
+        loading: false
       });
     })
     .catch((err) => {
       console.log('error', err);
+      this.setState({
+        success: false,
+        loading: false
+      });
     });
   }
 
@@ -46,7 +52,9 @@ class RegistrationForm extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        this.createAppointmentFromData(values);
+        this.setState({ loading: true }, () => {
+          this.createAppointmentFromData(values);
+        });
       }
     });
   }
@@ -61,6 +69,7 @@ class RegistrationForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { loading } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -95,23 +104,6 @@ class RegistrationForm extends Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem
           {...formItemLayout}
-          label={(
-            <span>
-              Name&nbsp;
-              <Tooltip title="What do you want the doctor to call you?">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-          )}
-        >
-          {getFieldDecorator('nickname', {
-            rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }]
-          })(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
           label="Phone Number"
         >
           {getFieldDecorator('phone', {
@@ -137,7 +129,7 @@ class RegistrationForm extends Component {
           {...formItemLayout}
           label="Time"
         >
-          {getFieldDecorator('date', {
+          {getFieldDecorator('time', {
             rules: [{
               required: true,
               message: 'Please choose time'
@@ -165,7 +157,9 @@ class RegistrationForm extends Component {
           )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">Book Now</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            {loading ? 'Booking' : 'Book Now'}
+          </Button>
         </FormItem>
       </Form>
     );

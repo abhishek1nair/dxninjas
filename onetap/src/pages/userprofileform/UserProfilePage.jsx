@@ -44,6 +44,7 @@ class RegistrationForm extends Component {
     .then((res) => {
       console.log(res);
       this.setState({ loading: false });
+      window.location.hash = '/appointment';
     })
     .catch((err) => {
       this.setState({ loading: false });
@@ -91,6 +92,7 @@ class RegistrationForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { loading } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -176,7 +178,9 @@ class RegistrationForm extends Component {
             )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">Register</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            {loading ? 'Registering' : 'Register'}
+          </Button>
         </FormItem>
       </Form>
     );
