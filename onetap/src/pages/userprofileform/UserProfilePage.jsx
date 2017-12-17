@@ -199,17 +199,13 @@ export default class UserProfilePage extends Component {
   constructor() {
     super();
     this.webcam = null;
-    this.setRef = this.setRef.bind(this);
     this.capture = this.capture.bind(this);
     this.state = {
       screenshot: null
     };
   }
-  setRef(webcam) {
-    this.webcam = webcam;
-  }
   capture() {
-    this.setState({ screenshot: this.webcam.getScreenshot() });
+    this.setState({ screenshot: this.iWebcam.getScreenshot() });
   }
   render() {
     return (
@@ -225,7 +221,7 @@ export default class UserProfilePage extends Component {
                 <Webcam
                   audio={false}
                   height={320}
-                  ref={this.setRef}
+                  ref={(f) => { this.iWebcam = f; } }
                   screenshotFormat="image/jpeg"
                   width={400}
                 />
