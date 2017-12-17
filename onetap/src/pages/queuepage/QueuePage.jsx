@@ -66,7 +66,45 @@ export default class QueuePage extends Component {
             <Row>
               <Col span={22}>
                 <div className='c-queue__title'>
-                  Dr. Pranjal Kumar
+                  <div>
+                    Dr. Pranjal Kumar
+                  </div>
+                  <div className='c-omonitor__text__wrapper'>
+                    <div className='c-omonitor__text__wrapper' style={{ color: '#780078' }}>
+                      <div className='c-queue__monitor__numbers'>
+                        {
+                          this.state.response && this.state.response.avg_consultation_time !== 0
+                          ? this.state.response.avg_consultation_time
+                          : '--'
+                        }
+                      </div>
+                      <div>
+                        <div className='c-omonitor__text'>
+                          Average
+                        </div>
+                        <div className='c-omonitor__text'>
+                          Wait Time
+                        </div>
+                      </div>
+                    </div>
+                    <div className='c-omonitor__text__wrapper' style={{ color: '#ff7800' }}>
+                      <div className='c-queue__monitor__numbers'>
+                        {
+                          this.state.response && this.state.response.avg_wait_time !== 0
+                          ? this.state.response.avg_wait_time
+                          : '--'
+                        }
+                      </div>
+                      <div>
+                        <div className='c-omonitor__text'>
+                          Average
+                        </div>
+                        <div className='c-omonitor__text'>
+                          Consult Time
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className='clearfix c-appointment__token__wrappers'>
                   <Col span={12}>
