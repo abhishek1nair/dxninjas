@@ -86,7 +86,7 @@ export default class ReceptionPage extends Component {
             this.setState({
               appointmentData: null
             });
-          }, 6 * 1000);
+          }, 20 * 1000);
         })
         .catch((err) => console.log(err));
         console.log('found a familiar face');
