@@ -6,6 +6,8 @@ import '../../AppointmentPage.css';
 import { enroll } from '../../utils/imageHandler';
 import { createUser } from '../../utils/api';
 
+import '../../UserCreate.css';
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -209,11 +211,11 @@ export default class UserProfilePage extends Component {
   }
   render() {
     return (
-      <div className='c-appointment__wrapper'>
+      <div className='c-usercreate__wrapper'>
         <Row>
           <Col span={2} />
           <Col span={20}>
-            <div className='c-appointment__title'>
+            <div className='c-usercreate__title'>
               Create User
             </div>
             <div>

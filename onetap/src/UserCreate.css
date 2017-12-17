@@ -1,9 +1,9 @@
-.c-appointment__wrapper {
-  margin-top: 20px;
+.c-usercreate__wrapper {
+  margin-top: 10px;
   margin-bottom: 50px;
 }
 
-.c-appointment__title {
+.c-usercreate__title {
   border-radius: 2px;
   font-size: 42px;
   padding: 10px;
