@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Tooltip, Icon, Select, Checkbox, Button, DatePicker, TimePicker } from 'antd';
+import { Form, Input, Select, Checkbox, Button, DatePicker, TimePicker, Alert } from 'antd';
 import moment from 'moment';
 import 'moment/locale/en-gb';
 import { createAppointment } from '../../utils/api';
@@ -69,7 +69,7 @@ class RegistrationForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { loading } = this.state;
+    const { loading, success } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -168,6 +168,13 @@ class RegistrationForm extends Component {
             {loading ? 'Booking' : 'Book Now'}
           </Button>
         </FormItem>
+        {success && <div style={{
+          fontSize: '18px',
+          margin: '10px',
+          color: '#464646',
+          textAlign: 'center' }}>
+          <Alert message="Your appointment has been confirmed." type="success" showIcon />
+        </div>}
       </Form>
     );
   }
