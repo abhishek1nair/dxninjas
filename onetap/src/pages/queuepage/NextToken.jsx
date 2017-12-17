@@ -46,7 +46,7 @@ export default class NextToken extends Component {
                 { this.props.nextUser.name }
               </div>
               <div className={cx('c-next-token__phone', { 'bounce animated': this.state.setClass })}>
-                { `*******${this.props.nextUser.contact.slice(10)}` }
+                { `*******${this.props.nextUser.contact.slice(-3)}` }
               </div>
             </div>
             : <div className='c-current-token__inner-body'>

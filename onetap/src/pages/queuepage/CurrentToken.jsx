@@ -47,7 +47,7 @@ export default class CurrentToken extends Component {
                 { this.props.currentUser.name }
               </div>
               <div className={cx('c-current-token__phone', { 'bounce animated': this.state.setClass })}>
-                { `*******${this.props.currentUser.contact.slice(10)}` }
+                { `*******${this.props.currentUser.contact.slice(-3)}` }
               </div>
             </div>
             : <div className='c-current-token__inner-body'>

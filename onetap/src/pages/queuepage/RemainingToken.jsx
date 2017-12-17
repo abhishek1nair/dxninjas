@@ -26,7 +26,7 @@ export default class RemainingToken extends Component {
                   { data.id }&nbsp;&nbsp;{ data.name }
                 </div>
                 <div style={{ display: 'inline-block', float: 'right' }}>
-                  { `*******${data.contact.slice(10)}` }
+                  { `*******${data.contact.slice(-3)}` }
                 </div>
               </div>
             );
