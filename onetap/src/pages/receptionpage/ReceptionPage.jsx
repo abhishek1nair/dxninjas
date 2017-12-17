@@ -75,7 +75,7 @@ export default class ReceptionPage extends Component {
           return appointmentId;
         })
         .then((appointmentIdToPatch) => {
-          const datetime = moment().format('YYYY-MM-DD HH:MM');
+          const datetime = moment().format('YYYY-MM-DD HH:mm');
           return patchAppointment({
             patchData: { checkin_time: datetime },
             appointmentId: appointmentIdToPatch

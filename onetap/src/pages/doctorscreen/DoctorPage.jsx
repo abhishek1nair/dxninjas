@@ -81,7 +81,7 @@ export default class DoctorPage extends Component {
               return appointmentId;
             })
             .then((appointmentIdToPatch) => {
-              const datetime = moment().format('YYYY-MM-DD HH:MM');
+              const datetime = moment().format('YYYY-MM-DD HH:mm');
               return patchAppointment({
                 patchData: { consultation_start: datetime },
                 appointmentId: appointmentIdToPatch
@@ -105,7 +105,7 @@ export default class DoctorPage extends Component {
   }
 
   finish() {
-    const datetime = moment().format('YYYY-MM-DD HH:MM');
+    const datetime = moment().format('YYYY-MM-DD HH:mm');
     this.setState({
       submitingUserData: true
     });
