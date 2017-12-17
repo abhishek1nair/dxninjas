@@ -161,7 +161,7 @@ def get_appointments():
     cur.execute(query, params)
     data = cur.fetchone()
     results['avg_wait_time'] = int(data[0] / 60) if data[0] else 0
-    query = "SELECT ap.appointment_time, ap.consultation_start, ap.id, u.name, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where checkin_time is  not null and consultation_end is null and DATE(appointment_time)=%s order by appointment_time"
+    query = "SELECT ap.appointment_time, ap.consultation_start, ap.id, u.name, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where checkin_time is  not null and consultation_end is null and DATE(appointment_time)=%s order by appointment_time, checkin_time"
     cur.execute(query, params)
 
     data = dictfetchall(cur)
