@@ -29,10 +29,15 @@ export default class AppointmentPage extends Component {
         <Row>
           <Col span={6} />
           <Col span={12}>
-            <div className='c-appointment__title' style={{ textAlign: 'center' }}>
+            <div className='c-appointment__title'>
               Book Appointment
             </div>
-            <WrappedRegistrationForm/>
+            <div className='c-appointment__body__wrapper'>
+              <div className='c-appointment__title--2'>
+                Patient Details
+              </div>
+              <WrappedRegistrationForm/>
+            </div>
           </Col>
           <Col span={6} />
         </Row>
