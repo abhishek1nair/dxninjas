@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Webcam from 'react-webcam';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Alert } from 'antd';
 import moment from 'moment';
 import 'moment/locale/en-gb';
 import { ThreeCircleLoader } from '../common/Loader.jsx';
@@ -11,6 +11,7 @@ export default class ReceptionPage extends Component {
   constructor() {
     super();
     this.webcam = null;
+    this.currentScreenshot = null;
     this.intervalId = null;
     this.setRef = this.setRef.bind(this);
     this.capture = this.capture.bind(this);
@@ -37,14 +38,18 @@ export default class ReceptionPage extends Component {
   capture() {
     // pool and recognize
     console.log('polling...');
+
     const image = this.webcam.getScreenshot();
+    this.setState({
+      screenshot: image
+    });
     recognize({
       image
     })
     .then((res) => {
       if ('Errors' in res.data) {
         console.log(res.data);
-        setTimeout(this.capture, 10 * 1000);
+        setTimeout(this.capture, 6 * 1000);
         return Promise.resolve();
       }
       const candidatesList = res.data.images.map(img => img.candidates);
@@ -81,14 +86,14 @@ export default class ReceptionPage extends Component {
             this.setState({
               appointmentData: null
             });
-          }, 3 * 1000);
+          }, 6 * 1000);
         })
         .catch((err) => console.log(err));
         console.log('found a familiar face');
-        setTimeout(this.capture, 10 * 1000);
+        setTimeout(this.capture, 6 * 1000);
       } else {
         console.log(' dont know this person');
-        setTimeout(this.capture, 10 * 1000);
+        setTimeout(this.capture, 6 * 1000);
       }
     });
   }
@@ -103,44 +108,48 @@ export default class ReceptionPage extends Component {
           style={{ textAlign: 'center', margin: '20px 0' }}>
           Book Appointment
         </div>
-        <Webcam
-          style={{
-            position: 'fixed',
-            left: '-10000px'
-          }}
-          audio={false}
-          height={320}
-          ref={this.setRef}
-          screenshotFormat="image/jpeg"
-          width={400}
-        />
         <div style={{ textAlign: 'center' }}>
-          <Button
-            style={{ marginTop: '20px' }}
-            onClick={this.startPolling}>
-              Start Reception Desk
-          </Button>
+          <Webcam
+            style={{
+            }}
+            audio={false}
+            height={240}
+            ref={this.setRef}
+            screenshotFormat="image/jpeg"
+            width={300}
+          />
+          <div>
+            <Button
+              style={{ marginTop: '20px' }}
+              onClick={this.startPolling}>
+                Start Reception Desk
+            </Button>
+          </div>
         </div>
-        <Modal
-          visible={this.state.polling}
-          footer={null}
-          closable={false}
-        >
-          <div style={{ textAlign: 'center', margin: '100px' }}>
-            <ThreeCircleLoader />
-            <div style={{ height: '20px' }}></div>
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-              Searching for next Appointment....
+        {this.state.polling && <div>
+          <div style={{
+            textAlign: 'center' }}>
+          </div>
+          {this.state.appointmentData === null &&
+            <div style={{ textAlign: 'center', margin: '50px', fontSize: '18px' }}>
+             <ThreeCircleLoader />
+              <div style={{ height: '20px' }}></div>
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                Searching for next Appointment....
+              </div>
             </div>
+            }
             <div style={{ textAlign: 'center' }}>
               <span>
-                {this.state.appointmentData !== null
-                  ? `Hey ${this.state.appointmentData.name}, you can meet the doctor shortly, please wait your turn.` :
-                  'Accepting next appointment, please look in the camera to continue.'}
+              {this.state.appointmentData !== null
+                  ? <div style={{ margin: '40px 30%', textAlign: 'center' }}>
+                    <Alert
+                    message={`Hey ${this.state.appointmentData.name}, you can meet the doctor shortly, please wait for your turn.`}
+                    type="success" showIcon /></div> :
+                  <span style={{ fontSize: '16px' }}>Accepting next appointment, please look into the camera to continue.</span>}
               </span>
             </div>
-          </div>
-        </Modal>
+          </div>}
       </div>
     );
   }
