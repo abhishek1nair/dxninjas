@@ -83,7 +83,7 @@ export default class QueuePage extends Component {
                           Average
                         </div>
                         <div className='c-omonitor__text'>
-                          Wait Time
+                          Consult Time
                         </div>
                       </div>
                     </div>
@@ -100,7 +100,7 @@ export default class QueuePage extends Component {
                           Average
                         </div>
                         <div className='c-omonitor__text'>
-                          Consult Time
+                          Wait Time
                         </div>
                       </div>
                     </div>
