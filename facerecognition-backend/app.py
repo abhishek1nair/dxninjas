@@ -26,7 +26,7 @@ CORS(app)
 @app.route('/dxhack/api/')
 def create_tables():
     cur = mysql.connection.cursor()
-    query = "CREATE TABLE user_profiles (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name VARCHAR(40), email_id VARCHAR(100), contact VARCHAR(15), UNIQUE KEY (email_id), UNIQUE KEY (contact));"
+    query = "CREATE TABLE user_profiles (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name VARCHAR(40), email_id VARCHAR(100), contact VARCHAR(15), UNIQUE KEY (contact));"
     cur.execute(query)
     query = "CREATE TABLE user_face_id (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, user_id INT, face_id VARCHAR(100), CONSTRAINT fk_user_face FOREIGN KEY (user_id) references user_profiles(id));"
     cur.execute(query)
@@ -57,6 +57,11 @@ def create_user():
     face_id = payload.get('face_id')
     db = mysql.connection
     cur = db.cursor()
+    query = "SELECT * from user_profiles where contact=%s"
+    cur.execute(query, (contact,))
+    data = cur.fetchone()
+    if data:
+        return 'Already Present'
     query = "INSERT into user_profiles (name,contact,email_id) VALUES(%s,%s,%s)"
     params = (name, contact, email_id)
     cur.execute(query, params)
