@@ -129,6 +129,7 @@ class RegistrationForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
+        <div style={{ display: 'none' }}>
         <FormItem
           {...formItemLayout}
           label="User Image"
@@ -143,6 +144,7 @@ class RegistrationForm extends Component {
             <Input />
             )}
         </FormItem>
+        </div>
         <FormItem
           {...formItemLayout}
           label="E-mail"
