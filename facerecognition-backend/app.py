@@ -114,10 +114,10 @@ def create_appointment():
         users = get_user_by_face(face_ids)
         now = datetime.datetime.now() + timedelta(minutes=330)
         ids_string = ','.join(("'" + str(x.get('id')) + "'") for x in users)
-        query = "SELECT ap.appointment_time, ap.checkin_time, ap.id, u.name, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where ap.consultation_end is null and user_id in ({user_ids}) and DATE(ap.appointment_time) = %s order by appointment_time".format(
+        query = "SELECT ap.appointment_time, ap.checkin_time, ap.id, ap.symptoms, u.name, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where ap.consultation_end is null and user_id in ({user_ids}) and DATE(ap.appointment_time) = %s order by appointment_time".format(
             user_ids=ids_string)
         cur.execute(query, (now.strftime("%Y-%m-%d"),))
-        # print(cur._last_executed)
+        # print cur._last_executed
         data = dictfetchall(cur)
         if data:
             result = data[0]
