@@ -9,6 +9,28 @@
   margin-bottom: 10px;
   background: white;
   box-shadow: 0 -1px 5px 0 #e5e5e8;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.c-omonitor__text__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.c-queue__monitor__numbers {
+  display: inline-block;
+  float: right;
+  margin: 0px 10px;
+}
+
+.c-omonitor__text {
+  font-size: 16px;
+  margin-left: 12px;
+  padding-top: 2px;
+  margin-right: 10px;
 }
 
 .c-appointment__token__wrappers {
