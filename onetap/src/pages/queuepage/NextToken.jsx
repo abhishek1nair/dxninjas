@@ -11,16 +11,18 @@ export default class NextToken extends Component {
       setClass: false
     };
   }
-  toggleClass() {
-    const { setClass } = this.state;
+
+  toggleClass(value) {
     this.setState({
-      setClass: !setClass
+      setClass: value
     });
   }
 
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props, nextProps)) {
-      this.toggleClass();
+      this.toggleClass(true);
+    } else {
+      this.toggleClass(false);
     }
   }
   render() {
