@@ -5,10 +5,21 @@
 
 .c-usercreate__title {
   border-radius: 2px;
-  font-size: 42px;
+  font-size: 24px;
   padding: 10px;
-  line-height: 50px;
+  line-height: 30px;
   margin-bottom: 10px;
   background: white;
   box-shadow: 0 -1px 5px 0 #e5e5e8;
+}
+
+.c-usercreate__body--wrapper {
+  background: white;
+  padding: 10px;
+}
+
+.c-usercreate__title--2 {
+  font-size: 24px;
+  border-bottom: 1px solid #b4b4be;
+  margin-bottom: 10px;
 }

@@ -113,8 +113,8 @@ class RegistrationForm extends Component {
           offset: 0
         },
         sm: {
-          span: 16,
-          offset: 8
+          span: 24,
+          offset: 19
         }
       }
     };
@@ -216,23 +216,30 @@ export default class UserProfilePage extends Component {
           <Col span={2} />
           <Col span={20}>
             <div className='c-usercreate__title'>
-              Create User
+              Patient Registration
             </div>
-            <div>
+            <div className='clearfix c-usercreate__body--wrapper'>
               <Col span={10}>
+                <div className='c-usercreate__title--2'>
+                  Patient Photo
+                </div>
                 <Webcam
                   audio={false}
                   height={320}
                   ref={(f) => { this.iWebcam = f; } }
                   screenshotFormat="image/jpeg"
-                  width={400}
+                  width={435}
                 />
-                <div>
+                <div style={{ marginTop: '10px' }}>
                   <Button style={{ marginBottom: '20px' }} onClick={this.capture} type="primary">Capture</Button>
                 </div>
                 {this.state.screenshot ? <img alt='captured' src={this.state.screenshot} /> : null}
               </Col>
+              <Col span={2} />
               <Col span={10}>
+                <div className='c-usercreate__title--2'>
+                  Patient Details
+                </div>
                 <WrappedRegistrationForm screenshot={this.state.screenshot} />
               </Col>
             </div>
