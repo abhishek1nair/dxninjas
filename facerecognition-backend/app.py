@@ -8,6 +8,7 @@ from flask import request
 from flask_cors import CORS
 import datetime
 from datetime import timedelta
+import urllib
 
 app = Flask(__name__)
 app.config['MYSQL_USER'] = 'root'
@@ -78,6 +79,10 @@ def update_appointment(appointment_id):
     if 'checkin_time' in payload:
         query = "checkin_time=%s where checkin_time is null"
         params = (datetime.datetime.strptime(payload.get('checkin_time'), '%Y-%m-%d %H:%M'),)
+        query_ap = "SELECT ap.id, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where ap.id=%s"
+        cur.execute(query_ap, (appointment_id,))
+        data = cur.fetchone()
+        send_sms(data[1], "You have been added to the queue. Please wait for your turn")
     if 'consultation_start' in payload:
         query = "consultation_start=%s where consultation_start is null"
         params = (datetime.datetime.strptime(payload.get('consultation_start'), '%Y-%m-%d %H:%M'),)
@@ -162,6 +167,13 @@ def get_appointments():
     results['appointments'] = json_data
 
     return jsonify(results)
+
+
+def send_sms(contact, msg_txt):
+    url = 'https://diagnostics-dxdata.practodev.com/send_message'
+    params = {'contact': contact, 'text': msg_txt}
+    url_params = urllib.urlencode(params)
+    response = request.get(url, params=params)
 
 
 def get_user_by_contact(contact):
