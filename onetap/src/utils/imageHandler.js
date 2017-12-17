@@ -1,7 +1,7 @@
 import axios from 'axios';
 import constants from '../constants/constants';
 
-const DEFAULT_GALLERY = 'practolense';
+const DEFAULT_GALLERY = 'practolensev2';
 
 export const enroll = ({
   image,
