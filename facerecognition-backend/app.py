@@ -21,7 +21,7 @@ CORS(app)
 # mysql.init_app(app)
 
 
-@app.route('/')
+@app.route('/dxhack/api/')
 def create_tables():
     cur = mysql.connection.cursor()
     query = "CREATE TABLE user_profiles (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name VARCHAR(40), email_id VARCHAR(100), contact VARCHAR(15), UNIQUE KEY (email_id), UNIQUE KEY (contact));"
@@ -35,7 +35,7 @@ def create_tables():
     return "Hello World!"
 
 
-@app.route('/user/<int:face_id>', methods=['GET'])
+@app.route('/dxhack/api/user/<int:face_id>', methods=['GET'])
 def get_user_details(face_id):
     cur = mysql.connection.cursor()
     # query = "SELECT * FROM user_profiles where id in (select user_id from user_face_id where face_id=%s)"
@@ -46,7 +46,7 @@ def get_user_details(face_id):
     return jsonify(data[0])
 
 
-@app.route('/user', methods=['POST'])
+@app.route('/dxhack/api/user', methods=['POST'])
 def create_user():
     payload = request.get_json()
     name = payload.get('name')
@@ -67,7 +67,7 @@ def create_user():
     return 'Done'
 
 
-@app.route('/appointment/<int:appointment_id>', methods=['PATCH'])
+@app.route('/dxhack/api/appointment/<int:appointment_id>', methods=['PATCH'])
 def update_appointment(appointment_id):
     db = mysql.connection
     cur = db.cursor()
@@ -90,7 +90,7 @@ def update_appointment(appointment_id):
     return 'Done'
 
 
-@app.route('/appointment', methods=['POST', 'GET'])
+@app.route('/dxhack/api/appointment', methods=['POST', 'GET'])
 def create_appointment():
     db = mysql.connection
     cur = db.cursor()
@@ -126,7 +126,7 @@ def create_appointment():
             return Response(status=404)
 
 
-@app.route('/appointments', methods=['GET'])
+@app.route('/dxhack/api/appointments', methods=['GET'])
 def get_appointments():
     db = mysql.connection
     cur = db.cursor()
