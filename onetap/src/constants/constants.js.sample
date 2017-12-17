@@ -1,6 +1,7 @@
 const constants = {
   KAIROS_APP_ID: 'sometinykey',
-  KAIROS_APP_KEY: 'someextralongkeyhere'
+  KAIROS_APP_KEY: 'someextralongkeyhere',
+  API_ENDPOINT: 'http://10.0.1.2:5000'
 };
 
 export default constants;

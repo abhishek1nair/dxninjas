@@ -1,6 +1,7 @@
 import axios from 'axios';
+import constants from '../constants/constants.js';
 
-const API_ENDPOINT = 'http://10.0.1.2:5000';
+const API_ENDPOINT = constants.API_ENDPOINT;
 
 export const createUser = ({ name, email, phone, faceId }) => axios({
   method: 'POST',
