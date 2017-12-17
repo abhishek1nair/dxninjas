@@ -31,7 +31,7 @@ export default class ReceptionPage extends Component {
     this.setState({
       polling: true
     });
-    setTimeout(this.capture, 10 * 1000);
+    this.capture();
   }
 
   capture() {
@@ -62,11 +62,11 @@ export default class ReceptionPage extends Component {
         .then((appointmentRes) => {
           const appointmentId = appointmentRes.data.id;
 
-          // if (!appointmentRes.data.checkin_time) {
+          if (!appointmentRes.data.checkin_time) {
             this.setState({
               appointmentData: appointmentRes.data
             });
-          // }
+          }
           return appointmentId;
         })
         .then((appointmentIdToPatch) => {
@@ -77,9 +77,11 @@ export default class ReceptionPage extends Component {
           });
         })
         .then(() => {
-          this.setState({
-            appointmentData: null
-          });
+          setTimeout(() => {
+            this.setState({
+              appointmentData: null
+            });
+          }, 3 * 1000);
         })
         .catch((err) => console.log(err));
         console.log('found a familiar face');
@@ -96,9 +98,14 @@ export default class ReceptionPage extends Component {
     console.log(this.state.appointmentData);
     return (
       <div>
+        <div
+          className='c-appointment__title'
+          style={{ textAlign: 'center', margin: '20px 0' }}>
+          Book Appointment
+        </div>
         <Webcam
           style={{
-            // position: 'fixed',
+            position: 'fixed',
             left: '-10000px'
           }}
           audio={false}
@@ -107,7 +114,13 @@ export default class ReceptionPage extends Component {
           screenshotFormat="image/jpeg"
           width={400}
         />
-        <Button style={{ marginTop: '20px' }} onClick={this.startPolling}>Capture</Button>
+        <div style={{ textAlign: 'center' }}>
+          <Button
+            style={{ marginTop: '20px' }}
+            onClick={this.startPolling}>
+              Start Reception Desk
+          </Button>
+        </div>
         <Modal
           visible={this.state.polling}
           footer={null}
@@ -115,11 +128,15 @@ export default class ReceptionPage extends Component {
         >
           <div style={{ textAlign: 'center', margin: '100px' }}>
             <ThreeCircleLoader />
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>Searching for next Appointment....</div>
+            <div style={{ height: '20px' }}></div>
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              Searching for next Appointment....
+            </div>
             <div style={{ textAlign: 'center' }}>
               <span>
                 {this.state.appointmentData !== null
-                  ? `Adding ${this.state.appointmentData.id} to queue.` : 'No appointment to queue.'}
+                  ? `Hey ${this.state.appointmentData.name}, you can meet the doctor shortly, please wait your turn.` :
+                  'Accepting next appointment, please look in the camera to continue.'}
               </span>
             </div>
           </div>

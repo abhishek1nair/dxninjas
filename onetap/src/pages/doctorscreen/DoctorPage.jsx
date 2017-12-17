@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Webcam from 'react-webcam';
-import { Button, Modal } from 'antd';
+import { Button, Row, Col, Input } from 'antd';
 import moment from 'moment';
 import 'moment/locale/en-gb';
-import { ThreeCircleLoader } from '../common/Loader.jsx';
 import { recognize } from '../../utils/imageHandler';
 import { getAppointment, patchAppointment } from '../../utils/api';
+
+const { TextArea } = Input;
 
 export default class DoctorPage extends Component {
   constructor() {
@@ -19,7 +20,9 @@ export default class DoctorPage extends Component {
       screenshot: null,
       start: true,
       faceIds: [],
-      polling: false,
+      loadingUserData: false,
+      submitingUserData: false,
+      submitted: false,
       appointmentData: null
     };
   }
@@ -30,6 +33,9 @@ export default class DoctorPage extends Component {
   capture() {
     // pool and recognize
     console.log('polling...');
+    this.setState({
+      loadingUserData: true
+    });
     const image = this.webcam.getScreenshot();
     recognize({
       image
@@ -56,7 +62,8 @@ export default class DoctorPage extends Component {
 
               // if (!appointmentRes.data.checkin_time) {
               this.setState({
-                appointmentData: appointmentRes.data
+                appointmentData: appointmentRes.data,
+                loadingUserData: false
               });
               // }
               return appointmentId;
@@ -68,9 +75,17 @@ export default class DoctorPage extends Component {
                 appointmentId: appointmentIdToPatch
               });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              this.setState({
+                loadingUserData: false
+              });
+              console.log(err);
+            });
           console.log('found a familiar face');
         } else {
+          this.setState({
+            loadingUserData: false
+          });
           console.log(' dont know this person');
         }
       });
@@ -78,20 +93,40 @@ export default class DoctorPage extends Component {
 
   finish() {
     const datetime = moment().format('YYYY-MM-DD HH:MM');
+    this.setState({
+      submitingUserData: true
+    });
     return patchAppointment({
       patchData: { consultation_end: datetime },
       appointmentId: this.state.appointmentData.id
+    })
+    .then(() => {
+      this.setState({
+        appointmentData: null,
+        submitingUserData: false,
+        submitted: true
+      });
+    })
+    .catch(() => {
+      this.setState({
+        submitingUserData: false
+      });
     });
   }
 
   render() {
-    console.log(this.state.polling);
     console.log(this.state.appointmentData);
+    const { appointmentData, loadingUserData, submitingUserData, submitted } = this.state;
     return (
       <div>
+        <div
+          className='c-appointment__title'
+          style={{ textAlign: 'center', margin: '20px 0' }}>
+          Patient Information Portal
+        </div>
         <Webcam
           style={{
-            // position: 'fixed',
+            position: 'fixed',
             left: '-10000px'
           }}
           audio={false}
@@ -100,14 +135,70 @@ export default class DoctorPage extends Component {
           screenshotFormat="image/jpeg"
           width={400}
         />
-        <Button style={{ marginTop: '20px' }} onClick={this.capture}>Capture</Button>
-        {this.state.appointmentData !== null &&
+        <div
+          style={{ textAlign: 'center', margin: '20px 0' }}>
+          <Button style={{ marginTop: '20px' }} onClick={this.capture} loading={loadingUserData}>
+            {loadingUserData ? 'Loading Patient Details' : 'Get Patient Details'}
+          </Button>
+        </div>
+        {appointmentData === null && submitted &&
+          <div style={{ textAlign: 'center', margin: '20px 0', fontSize: '16px' }}>
+            Successfully submitted patient details.
+          </div>
+        }
+        {appointmentData !== null &&
         <div>
-          <div>Details of Patients:</div>
-          <div>{this.state.appointmentData.name}</div>
-          <div>{this.state.appointmentData.contact}</div>
-          <Button style={{ marginTop: '20px' }} onClick={this.finish}>Consultation Complete</Button>
-      </div>}
+          <div
+            style={{ textAlign: 'center', margin: '20px 0', fontSize: '20px' }}>
+            Patient Details
+          </div>
+          <Row>
+            <Col span={8}></Col>
+            <Col span={8}>
+              <Row>
+                <Col span={12}>
+                  <div className="pd__title">Name</div>
+                </Col>
+                <Col span={12}>
+                  {appointmentData.name}
+                </Col>
+              </Row>
+              <Row>
+                <Col span={12}>
+                  <div className="pd__title">Contact</div>
+                </Col>
+                <Col span={12}>{appointmentData.contact}</Col>
+              </Row>
+              <Row>
+                <Col span={12} className="pd__title">
+                  <div className="pd__title">Self Diagnosis</div>
+                </Col>
+                <Col span={12}>{appointmentData.symptoms}</Col>
+              </Row>
+            </Col>
+            <Col span={8}></Col>
+          </Row>
+          <Row>
+            <div
+              style={{ textAlign: 'center', margin: '20px 0' }}>
+              {!submitted && <Row>
+                <Col span={8}></Col>
+                <Col span={8}>
+                  <TextArea
+                    placeholder="Autosize height with minimum and maximum number of lines"
+                    autosize={{ minRows: 2, maxRows: 6 }} />
+                </Col>
+                <Col span={8}></Col>
+              </Row>}
+              <Button
+                style={{ marginTop: '20px' }}
+                onClick={this.finish}
+                loading={submitingUserData}>
+                {submitingUserData ? 'Submitting Patient data' : 'Consultation Complete'}
+              </Button>
+            </div>
+          </Row>
+        </div>}
       </div>
     );
   }

@@ -86,6 +86,7 @@ def update_appointment(appointment_id):
         params = (datetime.datetime.strptime(payload.get('consultation_end'), '%Y-%m-%d %H:%M'),)
     query = "UPDATE appointments SET " + query + " and id=%s"
     cur.execute(query, params + (appointment_id,))
+    # print cur._last_executed
     db.commit()
     return 'Done'
 
@@ -113,14 +114,16 @@ def create_appointment():
         users = get_user_by_face(face_ids)
         now = datetime.datetime.now() + timedelta(minutes=330)
         ids_string = ','.join(("'" + str(x.get('id')) + "'") for x in users)
-        query = "SELECT ap.appointment_time, ap.id, u.name, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where user_id in ({user_ids}) and DATE(ap.appointment_time) = %s order by appointment_time".format(
+        query = "SELECT ap.appointment_time, ap.checkin_time, ap.id, ap.symptoms, u.name, u.contact from appointments as ap join user_profiles as u on ap.user_id=u.id where ap.consultation_end is null and user_id in ({user_ids}) and DATE(ap.appointment_time) = %s order by appointment_time".format(
             user_ids=ids_string)
         cur.execute(query, (now.strftime("%Y-%m-%d"),))
-        # print(cur._last_executed)
+        # print cur._last_executed
         data = dictfetchall(cur)
         if data:
             result = data[0]
             result['appointment_time'] = result['appointment_time'].strftime("%Y-%d-%m %H:%M")
+            result['checkin_time'] = result['checkin_time'].strftime(
+                "%Y-%d-%m %H:%M") if result['checkin_time'] else None
             return jsonify(data[0])
         else:
             return Response(status=404)
